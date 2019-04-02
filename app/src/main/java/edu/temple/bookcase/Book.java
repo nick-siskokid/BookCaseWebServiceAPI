@@ -1,12 +1,19 @@
+package edu.temple.bookcase;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Book {
+public class Book implements Parcelable {
+
     int id;
     String title;
     String author;
     int published;
     String coverURL;
+
     //constructor
     public Book(int id, String title, String author, int published, String coverURL) {
         this.id = id;
@@ -19,6 +26,27 @@ public class Book {
     public Book(JSONObject jsonbook) throws JSONException {
         this(jsonbook.getInt("id"), jsonbook.getString("title"), jsonbook.getString("author"), jsonbook.getInt("published"), jsonbook.getString("coverURL"));
     }
+
+    protected Book(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        author = in.readString();
+        published = in.readInt();
+        coverURL = in.readString();
+    }
+
+    public static final Creator<Book> CREATOR = new Creator<Book>() {
+        @Override
+        public Book createFromParcel(Parcel in) {
+            return new Book(in);
+        }
+
+        @Override
+        public Book[] newArray(int size) {
+            return new Book[size];
+        }
+    };
+
     //getter and setter for id
     public int getId() {
         return id;
@@ -65,5 +93,19 @@ public class Book {
 
     public void setCoverURL(String coverURL) {
         this.coverURL = coverURL;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(author);
+        dest.writeInt(published);
+        dest.writeString(coverURL);
     }
 }

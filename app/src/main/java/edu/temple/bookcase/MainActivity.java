@@ -7,6 +7,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
     BookDetailFragment bookDetailFragment;
     ViewPagerFragment viewPagerFragment;
     ArrayList<String> bookList;
+    ArrayList<Book> books;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
         //landscape tells us if we are in landscape mode or portrait mode
         landscape = findViewById(R.id.container2) == null;
 
-
+        books = new ArrayList<Book>();
         //retrieve JSON data from source
         getJSONData();
 
@@ -106,6 +110,17 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
         Handler jsonHandler = new Handler(new Handler.Callback(){
             @Override
             public boolean handleMessage(Message msg){
+                JSONArray JSONbooks = null;
+                try{
+                    JSONbooks = new JSONArray((String) msg.obj);
+                    if(books != null){
+                        for(int iterator = 0; iterator < JSONbooks.length(); iterator++){
+                            books.add(new Book(JSONbooks.getJSONObject(iterator)));
+                        }//end for loop
+                    }
+                } catch(JSONException e){
+                    e.printStackTrace();
+                }
                 return false;
             }
         });

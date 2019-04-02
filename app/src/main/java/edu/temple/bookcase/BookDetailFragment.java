@@ -21,13 +21,15 @@ import android.widget.TextView;
 public class BookDetailFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    //private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM1 = "book";
 
 
     TextView textView;
     View rootView;
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    //private String mParam1;
+    private Book mParam1;
 
 
     //private OnFragmentInteractionListener mListener;
@@ -40,15 +42,22 @@ public class BookDetailFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
+
 
      * @return A new instance of fragment BookDetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static BookDetailFragment newInstance(String param1) {
+    /*public static BookDetailFragment newInstance(String param1) {
         BookDetailFragment fragment = new BookDetailFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
+        fragment.setArguments(args);
+        return fragment;
+    }*/
+    public static BookDetailFragment newInstance(Book book){
+        BookDetailFragment fragment = new BookDetailFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_PARAM1, book);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,7 +66,7 @@ public class BookDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam1 = getArguments().getParcelable(ARG_PARAM1);
         }
     }
 
@@ -110,11 +119,11 @@ public class BookDetailFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }*/
 
-    public void displayBook(String title){
+    /*public void displayBook(String title){
         textView.setText(title);
         textView.setTextSize(40);
         textView.setPadding(5,50, 5, 5);
-        /*switch(bookIndex){
+        switch(bookIndex){
             case 0: textView.setText("Cat in the Hat"); break;
             case 1: textView.setText("Green Eggs and Ham"); break;
             case 2: textView.setText("Fox in Socks"); break;
@@ -122,6 +131,9 @@ public class BookDetailFragment extends Fragment {
             case 4: textView.setText("The Foot Book"); break;
             case 5: textView.setText("The Lorax"); break;
             case 6: textView.setText("One Fish Two Fish"); break;
-        }*/
+        }
+    }*/
+    public void displayBook(Book book){
+        
     }
 }
