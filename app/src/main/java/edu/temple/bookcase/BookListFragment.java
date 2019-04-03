@@ -25,10 +25,10 @@ public class BookListFragment extends Fragment {
     View rootView;
     Context parent;
 
-    ArrayList<String> bookList;
+    ArrayList<Book> bookList;
 
     // TODO: Rename and change types of parameters
-    private ArrayList<String> mParam1;
+    private ArrayList<Book> mParam1;
 
 
     private BookClickedInterface mListener;
@@ -46,10 +46,18 @@ public class BookListFragment extends Fragment {
      * @return A new instance of fragment BookListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static BookListFragment newInstance(ArrayList<String> param1) {
+    /*public static BookListFragment newInstance(ArrayList<String> param1) {
         BookListFragment fragment = new BookListFragment();
         Bundle args = new Bundle();
         args.putStringArrayList(ARG_PARAM1, param1);
+        fragment.setArguments(args);
+        return fragment;
+    }*/
+
+    public static BookListFragment newInstance(ArrayList<Book> param1) {
+        BookListFragment fragment = new BookListFragment();
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,7 +66,7 @@ public class BookListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getStringArrayList(ARG_PARAM1);
+            mParam1 = getArguments().getParcelableArrayList(ARG_PARAM1);
 
         }
     }
@@ -129,6 +137,6 @@ public class BookListFragment extends Fragment {
      */
     public interface BookClickedInterface {
         // TODO: Update argument type and name
-        void bookClicked(String title);
+        void bookClicked(Book book);
     }
 }

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -24,7 +25,7 @@ public class BookDetailFragment extends Fragment {
     //private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM1 = "book";
 
-
+    ImageView imageView;
     TextView textView;
     View rootView;
     // TODO: Rename and change types of parameters
@@ -134,6 +135,6 @@ public class BookDetailFragment extends Fragment {
         }
     }*/
     public void displayBook(Book book){
-        
+        textView.setText(book.getAuthor());
     }
 }

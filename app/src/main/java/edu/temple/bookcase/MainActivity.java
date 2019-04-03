@@ -24,14 +24,14 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
     BookListFragment bookListFragment;
     BookDetailFragment bookDetailFragment;
     ViewPagerFragment viewPagerFragment;
-    ArrayList<String> bookList;
+    //ArrayList<String> bookList;
     ArrayList<Book> books;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bookList = new ArrayList<String>();
+        /*bookList = new ArrayList<String>();
         bookList.add("Cat in the Hat");
         bookList.add("Green Eggs and Ham");
         bookList.add("Fox in Socks");
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
         bookList.add("The Foot Book");
         bookList.add("The Lorax");
         bookList.add("One Fish Two Fish");
-
+        */
         //landscape tells us if we are in landscape mode or portrait mode
         landscape = findViewById(R.id.container2) == null;
 
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
 
         bookDetailFragment = new BookDetailFragment();
 
-        bookListFragment = bookListFragment.newInstance(bookList);
+        bookListFragment = bookListFragment.newInstance(books);
 
         fm = getSupportFragmentManager();
 
@@ -66,15 +66,15 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
         }
         else{
             fm.beginTransaction()
-                    .replace(R.id.container1, viewPagerFragment.newInstance(bookList))
+                    .replace(R.id.container1, viewPagerFragment.newInstance(books))
                     .commit();
         }
 
     }
 
-    public void bookClicked(String title){
+    public void bookClicked(Book book){
         if(!landscape){
-            bookDetailFragment.displayBook(title);
+            bookDetailFragment.displayBook(book);
         }
     }
 
