@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,28 +25,22 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
     BookListFragment bookListFragment;
     BookDetailFragment bookDetailFragment;
     ViewPagerFragment viewPagerFragment;
-    //ArrayList<String> bookList;
+
     ArrayList<Book> books;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*bookList = new ArrayList<String>();
-        bookList.add("Cat in the Hat");
-        bookList.add("Green Eggs and Ham");
-        bookList.add("Fox in Socks");
-        bookList.add("Horton Hears a Who");
-        bookList.add("The Foot Book");
-        bookList.add("The Lorax");
-        bookList.add("One Fish Two Fish");
-        */
+
         //landscape tells us if we are in landscape mode or portrait mode
         landscape = findViewById(R.id.container2) == null;
 
         books = new ArrayList<Book>();
+
         //retrieve JSON data from source
         getJSONData();
+
 
         bookDetailFragment = new BookDetailFragment();
 
@@ -55,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
 
 
 
-        if(!landscape){
+       if(!landscape){
             fm.beginTransaction()
                     .add(R.id.container1, bookListFragment)
                     .commit();
@@ -83,9 +78,10 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
             public void run() {
                 try {
                     //URL object to parse data
+                    URL url2 = new URL("https://kamorris.com/lab/audlib/booksearch.php");
                     URL url = new URL("https://kamorris.com/lab/audlib/booksearch.php");
                     //bufferedReader object declaration to read url stream into
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(url2.openStream()));
                     //StringBuilder object declaration
                     StringBuilder builder = new StringBuilder();
                     String tmpString;
@@ -97,17 +93,23 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
                     Message msg = Message.obtain();
                     //add the builder to the message
                     msg.obj = builder.toString();
-                    //pass the message to the handler
 
+                    //Testing purposes: This print statement confirms that we have read in the JSONarray to the message
+                    System.out.println("This is what is contained in message: " + msg.obj);
+
+                    //pass the message to the handler
+                    jsonHandler.handleMessage(msg);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e){
                     e.printStackTrace();
                 }
             }//end public void run()
-        }.start(); //end Thread
 
-        Handler jsonHandler = new Handler(new Handler.Callback(){
+        }.start();//end Thread
+
+    }//end getJSONData()
+    Handler jsonHandler = new Handler(new Handler.Callback(){
             @Override
             public boolean handleMessage(Message msg){
                 JSONArray JSONbooks = null;
@@ -115,14 +117,26 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
                     JSONbooks = new JSONArray((String) msg.obj);
                     if(books != null){
                         for(int iterator = 0; iterator < JSONbooks.length(); iterator++){
+                            Log.d("The book object", JSONbooks.getJSONObject(iterator).toString());
                             books.add(new Book(JSONbooks.getJSONObject(iterator)));
+
+
                         }//end for loop
+                    } else{
+                        Log.d("The book is NULL", "not good");
                     }
                 } catch(JSONException e){
                     e.printStackTrace();
                 }
+                if (landscape) {
+                    fm.beginTransaction()
+                            .replace(R.id.container1, viewPagerFragment.newInstance(books))
+                            .commit();
+                }
+                else{
+                    bookListFragment.updateBookData(books);
+                }
                 return false;
             }
         });
-    }//end getJSONData()
 }

@@ -70,7 +70,11 @@ public class ViewPagerFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_view_pager, container, false);
         viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
-        viewPager.setAdapter(new fspa(getChildFragmentManager()));
+        fspa f = new fspa(getChildFragmentManager());
+        f.notifyDataSetChanged();
+        viewPager.setAdapter(f);
+        //viewPager.setAdapter(new fspa(getChildFragmentManager()));
+
         return rootView;
     }
 
@@ -88,6 +92,12 @@ public class ViewPagerFragment extends Fragment {
         public int getCount() {
             return books.size();
         }
+    }
+
+    public void updateBookData(ArrayList<Book> bookList){
+
+
+
     }
 }
 

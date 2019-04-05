@@ -135,6 +135,6 @@ public class BookDetailFragment extends Fragment {
         }
     }*/
     public void displayBook(Book book){
-        textView.setText(book.getAuthor());
+        textView.setText("This is for testing");
     }
 }

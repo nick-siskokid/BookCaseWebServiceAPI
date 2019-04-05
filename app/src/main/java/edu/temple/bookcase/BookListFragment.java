@@ -139,4 +139,16 @@ public class BookListFragment extends Fragment {
         // TODO: Update argument type and name
         void bookClicked(Book book);
     }
+
+    public void updateBookData(ArrayList<Book> bookList){
+        ArrayAdapter<Book> a = new ArrayAdapter<Book>(parent, android.R.layout.simple_list_item_1, mParam1);
+        a.notifyDataSetChanged();
+        listView.setAdapter(new ArrayAdapter<>(parent, android.R.layout.simple_list_item_1, mParam1));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parentView, View view, int position, long id) {
+                ((BookClickedInterface) parent).bookClicked(mParam1.get(position));
+            }
+        });
+    }
 }
